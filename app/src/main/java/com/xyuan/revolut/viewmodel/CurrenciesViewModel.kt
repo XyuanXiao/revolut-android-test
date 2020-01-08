@@ -15,13 +15,16 @@ class CurrenciesViewModel @Inject constructor(
 
 	private lateinit var view: CurrenciesActivity
 	lateinit var currenciesList: LiveData<CurrenciesResponse>
+	private lateinit var ratesList: ArrayList<RateItem>
+	private var baseCurrency: String = "EUR"
+	private var ratesMultiplier: Float = 1f
 
 	fun bindView(view: CurrenciesActivity) {
 		this.view = view
 	}
 
 	fun onViewCreated() {
-		updateCurrenciesList("EUR")
+		updateCurrenciesList(baseCurrency)
 	}
 
 	private fun updateCurrenciesList(base: String) {
@@ -29,7 +32,17 @@ class CurrenciesViewModel @Inject constructor(
 	}
 
 	fun onCurrenciesReceived(currencies: CurrenciesResponse) {
-		view.onRatesUpdated(getRatesList(currencies))
+		ratesList = getRatesList(currencies)
+		view.onRatesUpdated(ratesList)
+	}
+
+	fun onItemClicked(position: Int) {
+		ratesList.removeAt(position).let { item ->
+			baseCurrency = item.abbreviation
+			ratesMultiplier = item.value
+			ratesList.add(0, item)
+		}
+		view.onRatesUpdated(ratesList)
 	}
 
 	private fun getRatesList(response: CurrenciesResponse): ArrayList<RateItem> {

@@ -13,8 +13,8 @@
       android:text="@string/rates"
       android:textColor="@android:color/black"
       android:textSize="22sp"
-      android:layout_marginStart="64dp"
-      android:layout_marginLeft="64dp"
+      android:layout_marginStart="52dp"
+      android:layout_marginLeft="52dp"
       android:layout_marginTop="12dp"
       android:layout_marginBottom="24dp"/>
 

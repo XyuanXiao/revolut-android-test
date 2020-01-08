@@ -13,7 +13,7 @@ import com.xyuan.revolut.viewmodel.CurrenciesViewModel
 import javax.inject.Inject
 import  kotlinx.android.synthetic.main.activity_main.*
 
-class CurrenciesActivity : AppCompatActivity() {
+class CurrenciesActivity : AppCompatActivity(), OnItemClickListener {
 
   @Inject
   lateinit var viewModel: CurrenciesViewModel
@@ -49,7 +49,11 @@ class CurrenciesActivity : AppCompatActivity() {
 	}
 
 	fun onRatesUpdated(rates: ArrayList<RateItem>) {
-		adapter = RecyclerAdapter(rates)
+		adapter = RecyclerAdapter(rates, this)
 		rates_list.adapter = adapter
+	}
+
+	override fun onItemClicked(position: Int) {
+		viewModel.onItemClicked(position)
 	}
 }

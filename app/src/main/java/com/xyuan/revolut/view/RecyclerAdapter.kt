@@ -10,8 +10,9 @@ import com.xyuan.revolut.model.RateItem
 import kotlinx.android.synthetic.main.currency_item_layout.view.*
 
 class RecyclerAdapter(
-	private val rates: ArrayList<RateItem>
-) : RecyclerView.Adapter<RecyclerAdapter.CurrencyHolder>(), OnItemClickListener {
+	private val rates: ArrayList<RateItem>,
+	private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<RecyclerAdapter.CurrencyHolder>() {
 
 	override fun onCreateViewHolder(
 		parent: ViewGroup,
@@ -24,14 +25,7 @@ class RecyclerAdapter(
 	override fun getItemCount() = rates.size
 
 	override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
-		holder.bindItem(rates, position, this)
-	}
-
-	override fun onItemClicked(position: Int) {
-		notifyItemMoved(position, 0) //This is not animating because of the notifyDataSetChanged() below
-		val item = rates.removeAt(position)
-		rates.add(0, item)
-		notifyDataSetChanged()
+		holder.bindItem(rates, position, itemClickListener)
 	}
 
 
