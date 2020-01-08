@@ -40,13 +40,13 @@ class CurrenciesActivity : AppCompatActivity() {
       .inject(this)
   }
 
-  private fun initViewModel() {
-    viewModel.onViewCreated()
-    viewModel.bindView(this)
-    viewModel.currenciesList.observe(this, Observer {
-      viewModel.onCurrenciesReceived(it)
-    })
-  }
+	private fun initViewModel() {
+		viewModel.onViewCreated()
+		viewModel.bindView(this)
+		viewModel.currenciesList.observe(this, Observer {
+			viewModel.onCurrenciesReceived(it)
+		})
+	}
 
 	fun onRatesUpdated(rates: ArrayList<RateItem>) {
 		adapter = RecyclerAdapter(rates)
