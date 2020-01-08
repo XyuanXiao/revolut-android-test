@@ -15,31 +15,31 @@ import javax.inject.Singleton
 @Singleton
 class CurrenciesRepository {
 
-    private val BASE_URL = "https://revolut.duckdns.org/"
+	private val BASE_URL = "https://revolut.duckdns.org/"
 
-    private val webService = Retrofit
-        .Builder()
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-        .client(OkHttpClient().newBuilder().build())
-        .baseUrl(BASE_URL)
-        .build()
-        .create(WebService::class.java)
+	private val webService = Retrofit
+		.Builder()
+		.addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+		.client(OkHttpClient().newBuilder().build())
+		.baseUrl(BASE_URL)
+		.build()
+		.create(WebService::class.java)
 
-    fun getCurrencies(base: String): LiveData<CurrenciesResponse> {
-        val data = MutableLiveData<CurrenciesResponse>()
+	fun getCurrencies(base: String): LiveData<CurrenciesResponse> {
+		val data = MutableLiveData<CurrenciesResponse>()
 
-        webService.getCurrencies(base).enqueue(object : Callback<CurrenciesResponse> {
-            override fun onResponse(
-                call: Call<CurrenciesResponse>,
-                response: Response<CurrenciesResponse>
-            ) {
-                data.value = response.body()
-            }
+		webService.getCurrencies(base).enqueue(object : Callback<CurrenciesResponse> {
+			override fun onResponse(
+				call: Call<CurrenciesResponse>,
+				response: Response<CurrenciesResponse>
+			) {
+				data.value = response.body()
+			}
 
-            override fun onFailure(call: Call<CurrenciesResponse>, t: Throwable) {
-                //TODO
-            }
-        })
-        return data
-    }
+			override fun onFailure(call: Call<CurrenciesResponse>, t: Throwable) {
+				//TODO
+			}
+		})
+		return data
+	}
 }

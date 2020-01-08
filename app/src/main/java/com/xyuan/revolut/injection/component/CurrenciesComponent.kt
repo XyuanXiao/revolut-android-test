@@ -8,10 +8,10 @@ import dagger.android.ContributesAndroidInjector
 
 @ActivityScope
 @Component (
-    dependencies = [ApplicationComponent::class],
-    modules = [CurrenciesModule::class]
+	dependencies = [ApplicationComponent::class],
+	modules = [CurrenciesModule::class]
 )
 interface CurrenciesComponent {
-    @ContributesAndroidInjector
-    fun inject(activity: CurrenciesActivity)
+	@ContributesAndroidInjector
+	fun inject(activity: CurrenciesActivity)
 }

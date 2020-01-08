@@ -12,24 +12,24 @@ import javax.inject.Inject
 
 class MyApp : Application(), HasActivityInjector {
 
-    @Inject
-    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
+	@Inject
+	lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
-    private lateinit var applicationComponent: ApplicationComponent
+	private lateinit var applicationComponent: ApplicationComponent
 
-    override fun onCreate() {
-        super.onCreate()
-        applicationComponent = DaggerApplicationComponent
-            .builder()
-            .application(this)
-            .build()
-    }
+	override fun onCreate() {
+		super.onCreate()
+		applicationComponent = DaggerApplicationComponent
+			.builder()
+			.application(this)
+			.build()
+	}
 
-    fun get(context: Context) = context.applicationContext as MyApp
+	fun get(context: Context) = context.applicationContext as MyApp
 
-    fun getApplicationComponent(): ApplicationComponent = applicationComponent
+	fun getApplicationComponent(): ApplicationComponent = applicationComponent
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityInjector
-    }
+	override fun activityInjector(): AndroidInjector<Activity> {
+		return activityInjector
+	}
 }

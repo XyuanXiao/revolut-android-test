@@ -7,8 +7,8 @@ import retrofit2.http.Query
 
 interface WebService {
 
-    @GET("/latest")
-    fun getCurrencies(
-        @Query("base") name: String
-    ): Call<CurrenciesResponse>
+	@GET("/latest")
+	fun getCurrencies(
+		@Query("base") name: String
+	): Call<CurrenciesResponse>
 }

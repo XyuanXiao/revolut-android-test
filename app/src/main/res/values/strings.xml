@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Xyuan Revolut Test</string>
+	<string name="app_name">Xyuan Revolut Test</string>
+	<string name="rates">Rates</string>
 </resources>

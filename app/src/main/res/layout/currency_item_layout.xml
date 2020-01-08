@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tool="http://schemas.android.com/tools"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:padding="12dp">
+
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:orientation="vertical"
+		android:paddingEnd="12dp"
+		android:paddingRight="12dp">
+
+		<TextView
+			android:id="@+id/currency_abbreviation"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			tool:text="USD"
+			android:textColor="@android:color/black"
+			android:textSize="16sp"/>
+
+		<TextView
+			android:id="@+id/currency_description"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			tool:text="US Dollar"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="14sp"/>
+
+	</LinearLayout>
+
+	<EditText
+		android:id="@+id/currency_value"
+		android:layout_width="120dp"
+		android:layout_height="match_parent"
+		android:maxLines="1"
+		android:inputType="numberDecimal"
+		android:gravity="center_vertical"
+		tool:text="9876.54"
+		android:textColor="@android:color/black"
+		android:textSize="18sp"/>
+
+</LinearLayout>

@@ -10,20 +10,20 @@ import dagger.Provides
 
 @Module
 class CurrenciesModule(
-    var currenciesActivity: CurrenciesActivity
+	var currenciesActivity: CurrenciesActivity
 ) {
 
-    @Provides
-    @ActivityScope
-    fun providesContext(): CurrenciesActivity = currenciesActivity
+	@Provides
+	@ActivityScope
+	fun providesContext(): CurrenciesActivity = currenciesActivity
 
-    @Provides
-    @ActivityScope
-    fun providesCurrenciesViewModel(
-        currenciesRepository: CurrenciesRepository
-    ): CurrenciesViewModel = CurrenciesViewModel(currenciesRepository)
+	@Provides
+	@ActivityScope
+	fun providesCurrenciesViewModel(
+		currenciesRepository: CurrenciesRepository
+	): CurrenciesViewModel = CurrenciesViewModel(currenciesRepository)
 
-    @Provides
-    @ActivityScope
-    fun providesCurrenciesRepository(): CurrenciesRepository = CurrenciesRepository()
+	@Provides
+	@ActivityScope
+	fun providesCurrenciesRepository(): CurrenciesRepository = CurrenciesRepository()
 }
