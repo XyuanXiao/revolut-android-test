@@ -1,6 +1,7 @@
 package com.xyuan.revolut.view
 
 import android.os.Bundle
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,10 +11,10 @@ import com.xyuan.revolut.injection.component.DaggerCurrenciesComponent
 import com.xyuan.revolut.injection.module.CurrenciesModule
 import com.xyuan.revolut.model.RateItem
 import com.xyuan.revolut.viewmodel.CurrenciesViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import  kotlinx.android.synthetic.main.activity_main.*
 
-class CurrenciesActivity : AppCompatActivity(), OnItemClickListener {
+class CurrenciesActivity : AppCompatActivity(), OnItemClickListener, OnItemValueChangedListener {
 
   @Inject
   lateinit var viewModel: CurrenciesViewModel
@@ -28,9 +29,15 @@ class CurrenciesActivity : AppCompatActivity(), OnItemClickListener {
     linearLayoutManager = LinearLayoutManager(this)
     rates_list.layoutManager = linearLayoutManager
 
+		initAdapter(ArrayList())
     initInjection()
     initViewModel()
   }
+
+	private fun initAdapter(list: ArrayList<RateItem>) {
+		adapter = RecyclerAdapter(list, this, this)
+		rates_list.adapter = adapter
+	}
 
   private fun initInjection() {
     DaggerCurrenciesComponent
@@ -48,12 +55,17 @@ class CurrenciesActivity : AppCompatActivity(), OnItemClickListener {
 		})
 	}
 
-	fun onRatesUpdated(rates: ArrayList<RateItem>) {
-		adapter = RecyclerAdapter(rates, this)
-		rates_list.adapter = adapter
+	fun updateRates(rates: ArrayList<RateItem>) {
+		adapter.updateRates(rates)
 	}
 
 	override fun onItemClicked(position: Int) {
 		viewModel.onItemClicked(position)
+	}
+
+	override fun onValueChanged(currency: String, value: Float, editText: EditText) {
+		if (currentFocus == editText) {
+			viewModel.onItemValueChanged(currency, value)
+		}
 	}
 }
