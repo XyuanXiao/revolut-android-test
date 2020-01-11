@@ -29,7 +29,7 @@ class RecyclerAdapter(
 	override fun getItemCount() = rates.size
 
 	override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
-		holder.bindItem(rates, position, itemClickListener, valueChangedListener)
+		holder.bindItem(rates[position], position, itemClickListener, valueChangedListener)
 	}
 
 	fun updateRates(newRates: ArrayList<RateItem>) {
@@ -44,34 +44,33 @@ class RecyclerAdapter(
 		private var rateItem: RateItem? = null
 
 		fun bindItem(
-			rates: ArrayList<RateItem>,
+			item: RateItem,
 			position: Int,
 			itemClickListener: OnItemClickListener,
 			valueChangedListener: OnItemValueChangedListener
 		) {
-			rates[position].let { item ->
-				rateItem = item
-				view.position.text = (position + 1).toString()
-				view.currency_abbreviation.text = item.abbreviation
-				view.currency_description.text = item.description
-				view.currency_value.apply {
-					val value = if (item.value >= 0) item.value else 0f
-					setText(value.toString(), TextView.BufferType.EDITABLE)
-					clearFocus()
-					addTextChangedListener(object : TextWatcher{
-						override fun afterTextChanged(s: Editable?) {
+			rateItem = item
+			view.position.text = (position + 1).toString()
+			view.currency_abbreviation.text = item.abbreviation
+			view.currency_description.text = item.description
+			view.currency_value.apply {
+				val value = if (item.value >= 0) item.value else 0f
+				setText(value.toString(), TextView.BufferType.EDITABLE)
+				addTextChangedListener(object : TextWatcher{
+					override fun afterTextChanged(s: Editable?) {
+						rateItem?.let {
 							valueChangedListener.onValueChanged(
-								item.abbreviation,
+								it.abbreviation,
 								s.toString().toFloat(),
 								this@apply)
 						}
-						override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-						override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-					})
-				}
-				itemView.setOnClickListener{
-					itemClickListener.onItemClicked(position)
-				}
+					}
+					override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+					override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+				})
+			}
+			itemView.setOnClickListener{
+				itemClickListener.onItemClicked(position)
 			}
 		}
 	}
@@ -83,7 +82,7 @@ interface OnItemClickListener{
 
 interface OnItemValueChangedListener{
 	fun onValueChanged(
-		currency: String,
+		abbreviation: String,
 		value: Float,
 		editText: EditText
 	)

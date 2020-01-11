@@ -31,22 +31,28 @@ class CurrenciesViewModel @Inject constructor(
 		currenciesList = currenciesRepository.getCurrencies(base)
 	}
 
-	fun onItemClicked(position: Int) {
+	private fun moveItemToTop(position: Int) {
 		ratesList.removeAt(position).let { item ->
 			baseCurrency = item.abbreviation
-			ratesMultiplier = item.value
 			ratesList.add(0, item)
 		}
+	}
+
+	fun onItemClicked(position: Int) {
+		moveItemToTop(position)
 		view.updateRates(ratesList)
 	}
 
-	fun onItemValueChanged(currency: String, value: Float) {
-		for (item in ratesList) {
-			if (item.abbreviation == currency) {
+	fun onItemValueChanged(abbreviation: String, value: Float) {
+		var position = 0
+		ratesList.forEachIndexed { index, item ->
+			if (item.abbreviation == abbreviation) {
 				ratesMultiplier = value / item.value
-				break
+				position = index
 			}
 		}
+		moveItemToTop(position)
+
 		ratesList.forEach {
 			it.value = it.value * ratesMultiplier
 		}

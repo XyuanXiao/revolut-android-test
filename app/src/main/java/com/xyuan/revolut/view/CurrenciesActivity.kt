@@ -63,9 +63,9 @@ class CurrenciesActivity : AppCompatActivity(), OnItemClickListener, OnItemValue
 		viewModel.onItemClicked(position)
 	}
 
-	override fun onValueChanged(currency: String, value: Float, editText: EditText) {
+	override fun onValueChanged(abbreviation: String, value: Float, editText: EditText) {
 		if (currentFocus == editText) {
-			viewModel.onItemValueChanged(currency, value)
+			viewModel.onItemValueChanged(abbreviation, value)
 		}
 	}
 }
