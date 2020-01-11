@@ -1,6 +1,7 @@
 package com.xyuan.revolut.viewmodel
 
-import androidx.lifecycle.LiveData
+import android.os.Handler
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.xyuan.revolut.model.CurrenciesResponse
 import com.xyuan.revolut.model.RateItem
@@ -14,7 +15,7 @@ class CurrenciesViewModel @Inject constructor(
 ) : ViewModel() {
 
 	private lateinit var view: CurrenciesActivity
-	lateinit var currenciesList: LiveData<CurrenciesResponse>
+	lateinit var currenciesList: MutableLiveData<CurrenciesResponse>
 	private lateinit var ratesList: ArrayList<RateItem>
 	private var baseCurrency: String = "EUR"
 	private var ratesMultiplier: Float = 1f
@@ -24,11 +25,11 @@ class CurrenciesViewModel @Inject constructor(
 	}
 
 	fun onViewCreated() {
-		updateCurrenciesList(baseCurrency)
+		updateCurrenciesList()
 	}
 
-	private fun updateCurrenciesList(base: String) {
-		currenciesList = currenciesRepository.getCurrencies(base)
+	private fun updateCurrenciesList() {
+		currenciesList = currenciesRepository.getCurrencies(baseCurrency)
 	}
 
 	private fun moveItemToTop(position: Int) {
@@ -62,11 +63,20 @@ class CurrenciesViewModel @Inject constructor(
 	fun onCurrenciesReceived(currencies: CurrenciesResponse) {
 		ratesList = getRatesList(currencies)
 		view.updateRates(ratesList)
+		getCurrenciesAgain()
+	}
+
+	private fun getCurrenciesAgain() {
+		val handler = Handler()
+		handler.postDelayed({
+			updateCurrenciesList()
+		}, 3000) //I made it request each 3 seconds because 1 second was too frequent
 	}
 
 	private fun getRatesList(response: CurrenciesResponse): ArrayList<RateItem> {
 		val rates = ArrayList<RateItem>()
 
+		rates.add(RateItem("EUR", "Euro", response.rates.EUR?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("AUD", "Australian Dollar", response.rates.AUD?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("BGN", "Bulgarian Lev", response.rates.BGN?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("BRL", "Brazilian Real", response.rates.BRL?.times(ratesMultiplier) ?: 1f))
@@ -75,7 +85,6 @@ class CurrenciesViewModel @Inject constructor(
 		rates.add(RateItem("CNY", "Chinese Yuan", response.rates.CNY?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("CZK", "Czech Koruna", response.rates.CZK?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("DKK", "Danish Krone", response.rates.DKK?.times(ratesMultiplier) ?: 1f))
-		rates.add(RateItem("EUR", "Euro", response.rates.EUR?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("GBP", "British Pound", response.rates.GBP?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("HKD", "Hong Kong Dollar", response.rates.HKD?.times(ratesMultiplier) ?: 1f))
 		rates.add(RateItem("HRK", "Croatian Kuna", response.rates.HRK?.times(ratesMultiplier) ?: 1f))

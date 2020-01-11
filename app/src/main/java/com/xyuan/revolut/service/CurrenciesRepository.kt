@@ -1,6 +1,5 @@
 package com.xyuan.revolut.service
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.xyuan.revolut.model.CurrenciesResponse
@@ -25,9 +24,9 @@ class CurrenciesRepository {
 		.build()
 		.create(WebService::class.java)
 
-	fun getCurrencies(base: String): LiveData<CurrenciesResponse> {
-		val data = MutableLiveData<CurrenciesResponse>()
+	val data = MutableLiveData<CurrenciesResponse>()
 
+	fun getCurrencies(base: String): MutableLiveData<CurrenciesResponse> {
 		webService.getCurrencies(base).enqueue(object : Callback<CurrenciesResponse> {
 			override fun onResponse(
 				call: Call<CurrenciesResponse>,

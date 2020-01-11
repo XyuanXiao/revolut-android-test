@@ -1,6 +1,7 @@
 package com.xyuan.revolut.view
 
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -56,6 +57,7 @@ class CurrenciesActivity : AppCompatActivity(), OnItemClickListener, OnItemValue
 	}
 
 	fun updateRates(rates: ArrayList<RateItem>) {
+		loading.visibility = View.GONE
 		adapter.updateRates(rates)
 	}
 
